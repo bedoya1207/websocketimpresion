@@ -1,0 +1,62 @@
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>impresion</title>
+    
+</head>
+
+<body  style="text-align: center">
+<h1> Practica Websocket</h1>
+<br>
+<br>
+<input id="idText" type="textarea" placeholder="Escriba lo que desea imprimir">
+
+<br>
+<br>
+<br>
+<input type="button" value="Conectar" onclick="connect()" />
+<br>
+<br>
+<input type="button" value="Imprimir" onclick="sendFile()" />
+<h6>Sebastián Bedoya</h6>
+<script>
+    var ws;
+
+    function connect() {
+        ws = new WebSocket("ws://localhost:8025/websockets/receive/fileserver");
+        ws.binaryType = "arraybuffer";
+        ws.onopen = function() {
+            alert("Connected.")
+        };
+
+        ws.onmessage = function(evt) {
+            alert(evt.msg);
+        };
+
+        ws.onclose = function() {
+            alert("Connection closed...");
+        };
+        ws.onerror = function(e) {
+            alert(e.msg);
+        }
+
+    }
+
+    function sendFile() {
+        
+       
+        var reader = new FileReader();
+      
+        console.log("Test")
+        var data = document.getElementById('idText');
+        ws.send(data.value);
+        alert("Text transferred.")
+        ws.send('end');
+        console.log(data);
+
+    }
+
+
+</script>
+</body>
+</html>
